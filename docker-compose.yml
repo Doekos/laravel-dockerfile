@@ -1,0 +1,33 @@
+version: '3'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - 8000:80
+        volumes:
+            - .:/var/www/html
+        environment:
+            - APACHE_DOCUMENT_ROOT=/var/www/html/public
+        depends_on:
+            - db
+        networks:
+            - laravel-net
+
+    db:
+        image: mysql:8.0
+        ports:
+            - 3306:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+        volumes:
+            - dbdata:/var/lib/mysql
+        networks:
+            - laravel-net
+
+volumes:
+    dbdata:
+
+networks:
+    laravel-net:
